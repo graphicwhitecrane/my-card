@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White Crane - Digital Card</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            /* Light gray background */
+        }
+
+        /* App-like container */
+        .app-container {
+            max-width: 450px;
+            margin: 2.5rem auto;
+            /* Added top/bottom margin for desktop view */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 1.5rem;
+            /* 24px */
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        /* Custom shadow for profile */
+        .profile-shadow {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Custom class for button hover effects */
+        .btn-hover {
+            transition: all 0.3s ease;
+            transform: scale(1);
+        }
+
+        .btn-hover:hover {
+            transform: scale(1.03);
+            /* Slightly larger on hover */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            /* Softer shadow on hover */
+        }
+
+        /* QR Code Modal Styles */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            /* Dim background */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 24px;
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- 1. Header Banner (Blue Gradient) -->
+        <div class="h-40 rounded-t-3xl bg-gradient-to-r from-blue-500 to-blue-700">
+            <!-- You can add a logo here if you want -->
+        </div>
+
+        <!-- 2. Profile Section -->
+        <div class="px-6 relative">
+            <!-- Profile Image -->
+            <div class="relative -mt-16 mb-4 flex justify-center">
+                <div class="w-32 h-32 rounded-full border-4 border-white profile-shadow overflow-hidden bg-white">
+                    <!-- Final Correct Image -->
+                    <img src="https://i.postimg.cc/9Fw1jdsd/White-Crane-jpg.jpg" alt="Profile Picture" class="w-full h-full object-cover">
+                </div>
+            </div>
+
+            <!-- Text Info -->
+            <div class="text-center">
+                <h1 class="text-2xl font-bold text-gray-900">WHITE CRANE AQUARIUM (THAILAND) CO.,LTD.</h1>
+                <p class="text-sm text-gray-600 mt-2">
+                    332 Lat Pla Khao Rd, Khwaeng Chorakhe Bua, Khet Lat Phrao, Bangkok ,Thailand , 10230
+                </p>
+            </div>
+        </div>
+
+        <!-- 3. Main Action Buttons -->
+        <div class="px-6 pt-6 pb-4">
+            <div class="grid grid-cols-2 gap-4">
+                <!-- Save Contact Button -->
+                <button onclick="downloadVCard()" class="col-span-2 flex items-center justify-center gap-3 bg-blue-600 text-white font-semibold py-3 px-4 rounded-xl btn-hover shadow-lg shadow-blue-500/30">
+                    <i class="fas fa-download"></i>
+                    Save Contact
+                </button>
+
+                <!-- Call Button -->
+                <a href="tel:081-488-1888" class="flex flex-col items-center justify-center bg-green-500 text-white py-4 px-3 rounded-xl btn-hover shadow-lg shadow-green-500/30">
+                    <i class="fas fa-phone fa-lg mb-1"></i>
+                    <span class="text-sm font-medium">Call</span>
+                </a>
+
+                <!-- Email Button -->
+                <a href="mailto:whitecranegroup@gmail.com" class="flex flex-col items-center justify-center bg-gray-700 text-white py-4 px-3 rounded-xl btn-hover shadow-lg shadow-gray-700/30">
+                    <i class="fas fa-envelope fa-lg mb-1"></i>
+                    <span class="text-sm font-medium">Email</span>
+                </a>
+
+                <!-- Map Button -->
+                <a href="https://share.google/6nbUm67cdvngpzz6k" target="_blank" class="flex flex-col items-center justify-center bg-red-500 text-white py-4 px-3 rounded-xl btn-hover shadow-lg shadow-red-500/30">
+                    <i class="fas fa-map-marker-alt fa-lg mb-1"></i>
+                    <span class="text-sm font-medium">Map</span>
+                </a>
+
+                <!-- QR Code Button -->
+                <button onclick="openModal()" class="flex flex-col items-center justify-center bg-purple-500 text-white py-4 px-3 rounded-xl btn-hover shadow-lg shadow-purple-500/30">
+                    <i class="fas fa-qrcode fa-lg mb-1"></i>
+                    <span class="text-sm font-medium">QR Code</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 4. Social Links -->
+        <div class="px-6 py-4">
+            <h2 class="text-center text-gray-500 text-sm font-medium mb-4">Follow Us</h2>
+            <div class="space-y-3">
+                <!-- Website -->
+                <a href="https://www.whitecraneaquarium.com/" target="_blank" class="flex items-center bg-gray-100 p-4 rounded-xl btn-hover">
+                    <div class="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <span class="ml-4 font-semibold text-gray-800">Website</span>
+                    <i class="fas fa-chevron-right text-gray-400 ml-auto"></i>
+                </a>
+
+                <!-- Line -->
+                <a href="httpsm://line.me/ti/p/~@Whitecraneshop" target="_blank" class="flex items-center bg-gray-100 p-4 rounded-xl btn-hover">
+                    <div class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center">
+                        <i class="fab fa-line"></i>
+                    </div>
+                    <span class="ml-4 font-semibold text-gray-800">LINE: @Whitecraneshop</span>
+                    <i class="fas fa-chevron-right text-gray-400 ml-auto"></i>
+                </a>
+
+                <!-- Facebook -->
+                <a href="https://www.facebook.com/whitecraneaquarium" target="_blank" class="flex items-center bg-gray-100 p-4 rounded-xl btn-hover">
+                    <div class="w-10 h-10 rounded-full bg-blue-800 text-white flex items-center justify-center">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <span class="ml-4 font-semibold text-gray-800">Facebook</span>
+                    <i class="fas fa-chevron-right text-gray-400 ml-auto"></i>
+                </a>
+
+                <!-- YouTube -->
+                <a href="https://www.youtube.com/@whitecraneaquarium3713" target="_blank" class="flex items-center bg-gray-100 p-4 rounded-xl btn-hover">
+                    <div class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <span class="ml-4 font-semibold text-gray-800">YouTube</span>
+                    <i class="fas fa-chevron-right text-gray-400 ml-auto"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- 5. Footer -->
+        <div class="text-center p-6">
+            <p class="text-xs text-gray-400">&copy; 2024 White Crane Aquarium. All Rights Reserved.</p>
+        </div>
+    </div>
+
+
+    <!-- QR Code Modal -->
+    <div id="qrModal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h3 class="text-xl font-semibold mb-4">Scan QR Code</h3>
+            <!-- QR Code generated from Google Charts API -->
+            <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=https://www.whitecraneaquarium.com/&choe=UTF-8" alt="QR Code" class="mx-auto rounded-lg">
+            <p class="text-gray-600 mt-4">Scan to visit our website</p>
+        </div>
+    </div>
+
+
+    <script>
+        // --- vCard Download Function ---
+        function downloadVCard() {
+            // Define vCard data
+            const vCardData = [
+                "BEGIN:VCARD",
+                "VERSION:3.0",
+                "N:Aquarium;White Crane (Thailand) CO.,LTD.;;;", // N:LastName;FirstName;MiddleName;Prefix;Suffix
+                "FN:WHITE CRANE AQUARIUM (THAILAND) CO.,LTD.", // Full Name
+                "ORG:WHITE CRANE AQUARIUM (THAILAND) CO.,LTD.", // Organization
+                "TEL;TYPE=CELL,VOICE:081-488-1888", // Phone (Cell)
+                "EMAIL:whitecranegroup@gmail.com", // Email
+                "URL:https://www.whitecraneaquarium.com/", // Website
+                "ADR;TYPE=WORK:;;332 Lat Pla Khao Rd, Khwaeng Chorakhe Bua, Khet Lat Phrao;Bangkok;Thailand;10230", // Address
+                "END:VCARD"
+            ].join("\n");
+
+            // Create a Blob
+            const blob = new Blob([vCardData], {
+                type: "text/vcard;charset=utf-8"
+            });
+
+            // Create a download link
+            const downloadLink = document.createElement("a");
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = "WhiteCraneAquarium.vcf"; // File name
+
+            // Trigger the download
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+
+        // --- QR Code Modal Functions ---
+        const modal = document.getElementById('qrModal');
+
+        function openModal() {
+            if (modal) {
+                modal.style.display = "flex"; // Use flex to center it
+            }
+        }
+
+        function closeModal() {
+            if (modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+</html>
